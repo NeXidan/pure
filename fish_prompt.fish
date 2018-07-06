@@ -105,11 +105,11 @@ function pre_prompt --on-event fish_prompt
 
       # If arrow is not "0", it means it's dirty
       if test $git_arrow_left != 0
-        set git_arrows " $pure_symbol_git_up_arrow"
+        set git_arrows " $pure_color_green$pure_symbol_git_up_arrow$pure_color_normal"
       end
 
       if test $git_arrow_right != 0
-        set git_arrows " $git_arrows$pure_symbol_git_down_arrow"
+        set git_arrows " $git_arrows$pure_color_red$pure_symbol_git_down_arrow$pure_color_normal"
       end
     end
 
