@@ -12,8 +12,8 @@ set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 # Symbols
 
 __pure_set_default pure_symbol_prompt ":"
-__pure_set_default pure_symbol_git_down_arrow "⇣"
-__pure_set_default pure_symbol_git_up_arrow "⇡"
+__pure_set_default pure_symbol_git_down_arrow "-"
+__pure_set_default pure_symbol_git_up_arrow "+"
 __pure_set_default pure_symbol_git_dirty "*"
 __pure_set_default pure_symbol_horizontal_bar "—"
 
@@ -105,16 +105,16 @@ function pre_prompt --on-event fish_prompt
 
       # If arrow is not "0", it means it's dirty
       if test $git_arrow_left != 0
-        set git_arrows " $pure_color_green$pure_symbol_git_up_arrow$pure_color_normal"
+        set git_arrows "$pure_color_green$pure_symbol_git_up_arrow$pure_color_normal"
       end
 
       if test $git_arrow_right != 0
-        set git_arrows " $git_arrows$pure_color_red$pure_symbol_git_down_arrow$pure_color_normal"
+        set git_arrows "$git_arrows$pure_color_red$pure_symbol_git_down_arrow$pure_color_normal"
       end
     end
 
     # Format Git prompt output
-    set pre_prompt $pre_prompt "$pure_color_green$git_branch_name$pure_color_red$git_dirty$pure_color_normal$pure_color_cyan$git_arrows$pure_color_normal "
+    set pre_prompt $pre_prompt "$pure_color_green$git_branch_name$pure_color_red$git_dirty$pure_color_normal $pure_color_cyan$git_arrows$pure_color_normal "
   end
 
   if test $pure_user_host_location -ne 1
