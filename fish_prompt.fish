@@ -38,7 +38,7 @@ __pure_set_default pure_root_color $pure_color_normal
 __pure_set_default pure_user_host_location 0
 
 # Max execution time of a process before its run time is shown when it exits
-__pure_set_default pure_command_max_exec_time 5
+__pure_set_default pure_command_max_exec_time 1
 
 function pre_prompt --on-event fish_prompt
   # Template
@@ -50,9 +50,14 @@ function pre_prompt --on-event fish_prompt
   set -l command_duration ""
   set -l pre_prompt ""
 
+  # Prompt command execution duration
+  if test -n "$CMD_DURATION"
+    set command_duration (__format_time $CMD_DURATION $pure_command_max_exec_time)
+  end
+
   # Do not add a line break to a brand new session
   if test $__pure_fresh_session -eq 0
-    set pre_prompt $pre_prompt "\n"
+    set pre_prompt $pre_prompt "$pure_color_yellow$command_duration$pure_color_normal\n"
   end
 
   # Check if user is in an SSH session
@@ -70,9 +75,9 @@ function pre_prompt --on-event fish_prompt
     set user_and_host "$user$pure_color_gray@$pure_host_color$host$pure_color_normal "
   end
 
-  # if test $pure_user_host_location -eq 1
-    # set pre_prompt $pre_prompt $user_and_host
-  # end
+  if test $pure_user_host_location -eq 1
+    set pre_prompt $pre_prompt $user_and_host
+  end
 
   # Format current folder on prompt output
   set pre_prompt $pre_prompt "$pure_color_cyan$current_folder$pure_color_normal "
@@ -120,13 +125,6 @@ function pre_prompt --on-event fish_prompt
   if test $pure_user_host_location -ne 1
     set pre_prompt $pre_prompt $user_and_host
   end
-
-  # Prompt command execution duration
-  if test -n "$CMD_DURATION"
-    set command_duration (__format_time $CMD_DURATION $pure_command_max_exec_time)
-  end
-
-  set pre_prompt $pre_prompt "$pure_color_yellow$command_duration$pure_color_normal"
 
   echo -e -s $pre_prompt
 end
