@@ -11,7 +11,7 @@ set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 
 # Symbols
 
-__pure_set_default pure_symbol_prompt "❯"
+__pure_set_default pure_symbol_prompt ":"
 __pure_set_default pure_symbol_git_down_arrow "⇣"
 __pure_set_default pure_symbol_git_up_arrow "⇡"
 __pure_set_default pure_symbol_git_dirty "*"
@@ -24,7 +24,7 @@ __pure_set_default pure_color_green (set_color green)
 __pure_set_default pure_color_blue (set_color blue)
 __pure_set_default pure_color_yellow (set_color yellow)
 __pure_set_default pure_color_cyan (set_color cyan)
-__pure_set_default pure_color_gray (set_color 93A1A1)
+__pure_set_default pure_color_gray (set_color brblack)
 __pure_set_default pure_color_normal (set_color normal)
 
 __pure_set_default pure_username_color $pure_color_gray
@@ -70,12 +70,12 @@ function pre_prompt --on-event fish_prompt
     set user_and_host "$user$pure_color_gray@$pure_host_color$host$pure_color_normal "
   end
 
-  if test $pure_user_host_location -eq 1
-    set pre_prompt $pre_prompt $user_and_host
-  end
+  # if test $pure_user_host_location -eq 1
+    # set pre_prompt $pre_prompt $user_and_host
+  # end
 
   # Format current folder on prompt output
-  set pre_prompt $pre_prompt "$pure_color_blue$current_folder$pure_color_normal "
+  set pre_prompt $pre_prompt "$pure_color_cyan$current_folder$pure_color_normal "
 
   # Exit with code 1 if git is not available
   if not type -fq git
@@ -101,7 +101,7 @@ function pre_prompt --on-event fish_prompt
       set -l git_status (string split ' ' (string replace -ar '\s+' ' ' (command git rev-list --left-right --count 'HEAD...@{upstream}')))
 
       set -l git_arrow_left $git_status[1]
-      set -l git_arrow_right $git_status[2] 
+      set -l git_arrow_right $git_status[2]
 
       # If arrow is not "0", it means it's dirty
       if test $git_arrow_left != 0
@@ -114,7 +114,7 @@ function pre_prompt --on-event fish_prompt
     end
 
     # Format Git prompt output
-    set pre_prompt $pre_prompt "$pure_color_gray$git_branch_name$git_dirty$pure_color_normal$pure_color_cyan$git_arrows$pure_color_normal "
+    set pre_prompt $pre_prompt "$pure_color_green$git_branch_name$pure_color_red$git_dirty$pure_color_normal$pure_color_cyan$git_arrows$pure_color_normal "
   end
 
   if test $pure_user_host_location -ne 1
